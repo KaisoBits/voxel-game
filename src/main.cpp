@@ -43,4 +43,8 @@ int main(int argc, char** argv)
 
 		glfwSwapBuffers(window);
 	}
+
+	glfwTerminate();
+
+	return 0;
 }
