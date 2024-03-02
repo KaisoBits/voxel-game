@@ -13,10 +13,50 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{f387effe-e772-49b4-9854-e4a7d888e8de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\vendor\glad\src\glad.c">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui_demo.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui_draw.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui_impl_glfw.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui_impl_opengl3.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui_stdlib.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui_tables.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\imgui\src\imgui_widgets.cpp">
+      <Filter>vendor</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\vendor\imgui\src\imgui.natvis">
+      <Filter>vendor</Filter>
+    </Natvis>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\vendor\imgui\src\imgui.natstepfilter">
+      <Filter>vendor</Filter>
+    </None>
   </ItemGroup>
 </Project>
