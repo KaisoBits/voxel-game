@@ -48,6 +48,9 @@
     <ClCompile Include="..\vendor\imgui\src\imgui_widgets.cpp">
       <Filter>vendor</Filter>
     </ClCompile>
+    <ClCompile Include="chunk.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\vendor\imgui\src\imgui.natvis">
@@ -58,5 +61,13 @@
     <None Include="..\vendor\imgui\src\imgui.natstepfilter">
       <Filter>vendor</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="world.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vechasher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

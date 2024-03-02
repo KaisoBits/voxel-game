@@ -156,6 +156,7 @@
     <ClCompile Include="..\vendor\imgui\src\imgui_stdlib.cpp" />
     <ClCompile Include="..\vendor\imgui\src\imgui_tables.cpp" />
     <ClCompile Include="..\vendor\imgui\src\imgui_widgets.cpp" />
+    <ClCompile Include="chunk.h" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +164,10 @@
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\vendor\imgui\src\imgui.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="vechasher.h" />
+    <ClInclude Include="world.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,8 +3,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "world.h"
+
 constexpr int windowWidth = 800;
 constexpr int windowHeight = static_cast<int>(windowWidth * (9.0/16.0));
+
+World world(100, 100);
 
 int main(int argc, char** argv)
 {
@@ -34,6 +38,8 @@ int main(int argc, char** argv)
 	}
 
 	glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
+
+	world.UpdateBlock(glm::ivec3(0), true);
 
 	while (!glfwWindowShouldClose(window))
 	{
