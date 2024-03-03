@@ -16,6 +16,9 @@
     <Filter Include="vendor">
       <UniqueIdentifier>{f387effe-e772-49b4-9854-e4a7d888e8de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{00e0abae-7e53-4624-80cd-03f2be8a770f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,6 +64,9 @@
     <None Include="..\vendor\imgui\src\imgui.natstepfilter">
       <Filter>vendor</Filter>
     </None>
+    <None Include="blockprovider.h">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="world.h">
@@ -69,5 +75,15 @@
     <ClInclude Include="vechasher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="blockdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="shaders/**" />
+    <EmbeddedResource Include="shaders/**" />
   </ItemGroup>
 </Project>

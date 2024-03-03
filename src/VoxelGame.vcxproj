@@ -166,11 +166,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\vendor\imgui\src\imgui.natstepfilter" />
+    <None Include="blockprovider.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\vendor\imgui\src\imgui.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blockdata.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="vechasher.h" />
     <ClInclude Include="world.h" />
