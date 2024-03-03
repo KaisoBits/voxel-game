@@ -160,12 +160,18 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="shaders/**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\vendor\imgui\src\imgui.natstepfilter" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\vendor\imgui\src\imgui.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="shader.h" />
     <ClInclude Include="vechasher.h" />
     <ClInclude Include="world.h" />
   </ItemGroup>
