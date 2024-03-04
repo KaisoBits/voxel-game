@@ -114,7 +114,7 @@ int main(int argc, char** argv)
 		shader.SetMat4("perspective", perspective);
 
 		world.ApplyChanges();
-		world.Draw();
+		world.Draw(shader);
 
 		glfwSwapBuffers(window);
 	}

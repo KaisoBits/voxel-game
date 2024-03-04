@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include "chunk.h"
+#include "shader.h"
 #include "vechasher.h"
 #include "blockprovider.h"
 
@@ -59,10 +60,10 @@ public:
 		m_dirtyChunks.clear();
 	}
 
-	void Draw() const
+	void Draw(Shader& shader) const
 	{
-		for (const auto& chunk : m_chunks)
-			chunk.second.Draw();
+		for (const auto& [_, chunk] : m_chunks)
+			chunk.Draw(shader);
 	}
 
 private:

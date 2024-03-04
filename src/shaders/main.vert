@@ -7,10 +7,12 @@ uniform mat4 model = mat4(1);
 uniform mat4 view = mat4(1);
 uniform mat4 perspective = mat4(1);
 
+uniform vec2 chunkPos;
+
 flat out int darken;
 
 void main()
 {
 	darken = abs(dot(normal, vec3(0, 0, -1))) > 0.1 ? 1 : 0;
-	gl_Position = perspective * view * model * vec4(position, 1.0);
+	gl_Position = perspective * view * model * vec4(position + vec3(chunkPos.x, 0, chunkPos.y), 1.0);
 }

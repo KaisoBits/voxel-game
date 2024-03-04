@@ -74,6 +74,12 @@ public:
 		glUniformMatrix4fv(loc, 1, false, glm::value_ptr(value));
 	}
 
+	void SetVec3(const std::string& paramName, const glm::vec3& value)
+	{
+		int loc = glGetUniformLocation(m_programId, paramName.c_str());
+		glUniform3fv(loc, 1, glm::value_ptr(value));
+	}
+
 	void Use() const
 	{
 		glUseProgram(m_programId);

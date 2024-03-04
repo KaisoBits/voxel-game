@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "vechasher.h"
+#include "shader.h"
 #include "blockprovider.h"
 #include "blockdata.h"
 
@@ -48,8 +49,11 @@ public:
 		return it != m_blocks.end() && it->second;
 	}
 
-	void Draw() const
+	void Draw(Shader& shader) const
 	{
+		glm::ivec2 globalPos = m_position * m_dimensions;
+		shader.SetVec3("chunkPos", glm::vec3(globalPos.x, 0, globalPos.y));
+
 		glBindVertexArray(m_meshVao);
 		glDrawArrays(GL_TRIANGLES, 0, m_verticesCount);
 	}
