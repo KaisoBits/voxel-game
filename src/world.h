@@ -12,7 +12,7 @@
 class World : public IBlockProvider
 {
 public:
-	explicit World(unsigned int chunkWidth, unsigned int chunkDepth)
+	explicit World(int chunkWidth, int chunkDepth)
 		: m_chunkWidth(chunkWidth), m_chunkDepth(chunkDepth)
 	{
 		m_chunks.emplace(glm::ivec2(0), glm::ivec2(chunkWidth, chunkDepth)); // Default chunk for testing 
@@ -20,8 +20,8 @@ public:
 
 	void UpdateVoxel(glm::ivec3 coordinate, bool set)
 	{
-		glm::ivec2 chunkPos = glm::ivec2(coordinate.x % m_chunkWidth, coordinate.z % m_chunkDepth);
-		glm::ivec3 inChunkPos = glm::ivec3(coordinate.x / m_chunkWidth, coordinate.y, coordinate.z / m_chunkDepth);
+		glm::ivec2 chunkPos = glm::ivec2(coordinate.x / m_chunkWidth, coordinate.z / m_chunkDepth);
+		glm::ivec3 inChunkPos = glm::ivec3(coordinate.x % m_chunkWidth, coordinate.y, coordinate.z % m_chunkDepth);
 
 		auto it = m_chunks.find(chunkPos);
 		if (it == m_chunks.end())
@@ -66,8 +66,8 @@ public:
 	}
 
 private:
-	unsigned int m_chunkWidth;
-	unsigned int m_chunkDepth;
+	int m_chunkWidth;
+	int m_chunkDepth;
 	std::unordered_map<glm::ivec2, Chunk, VecHasher<int, 2>> m_chunks;
 	std::unordered_set<glm::ivec2, VecHasher<int, 2>> m_dirtyChunks;
 };

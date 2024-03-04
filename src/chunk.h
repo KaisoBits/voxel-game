@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 #include <unordered_map>
 #include <vector>
+#include <chrono>
+#include <iostream>
 
 #include "vechasher.h"
 #include "blockprovider.h"
@@ -36,7 +38,7 @@ public:
 		}
 		else
 		{
-			m_blocks[coordinate] = {};
+			m_blocks[coordinate] = true;
 		}
 	}
 
@@ -54,6 +56,9 @@ public:
 
 	void GenerateMesh(const IBlockProvider& blockProvider)
 	{
+		using namespace std::chrono;
+		using namespace std::chrono_literals;
+
 		unsigned int vertCount = 0;
 
 		glBindVertexArray(m_meshVao);
@@ -61,44 +66,36 @@ public:
 
 		std::vector<float> vertexData;
 
+		constexpr size_t vertLen = std::size(FRONT_FACE);
+
+		auto generationStart = high_resolution_clock::now();
+
 		for (auto& pair : m_blocks)
 		{
-			glm::ivec3 globalPos = pair.first + glm::ivec3(m_position.x, 0, m_position.y);
-			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)))
-			{
-				vertexData.insert(vertexData.end(), std::begin(FRONT_FACE), std::end(FRONT_FACE));
-				vertCount += 6;
-			}
+			glm::ivec3 relativePos = pair.first;
+			glm::ivec3 globalPos = glm::ivec3(m_position.x * m_dimensions.x, 0, m_position.y * m_dimensions.y) + relativePos;
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, 1)))
-			{
-				vertexData.insert(vertexData.end(), std::begin(BACK_FACE), std::end(BACK_FACE));
-				vertCount += 6;
-			}
+				PushFace(vertexData, FRONT_FACE, relativePos);
+			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)))
+				PushFace(vertexData, BACK_FACE, relativePos);
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 1, 0)))
-			{
-				vertexData.insert(vertexData.end(), std::begin(TOP_FACE), std::end(TOP_FACE));
-				vertCount += 6;
-			}
+				PushFace(vertexData, TOP_FACE, relativePos);
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, -1, 0)))
-			{
-				vertexData.insert(vertexData.end(), std::begin(BOTTOM_FACE), std::end(BOTTOM_FACE));
-				vertCount += 6;
-			}
+				PushFace(vertexData, BOTTOM_FACE, relativePos);
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(1, 0, 0)))
-			{
-				vertexData.insert(vertexData.end(), std::begin(RIGHT_FACE), std::end(RIGHT_FACE));
-				vertCount += 6;
-			}
+				PushFace(vertexData, RIGHT_FACE, relativePos);
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(-1, 0, 0)))
-			{
-				vertexData.insert(vertexData.end(), std::begin(LEFT_FACE), std::end(LEFT_FACE));
-				vertCount += 6;
-			}
+				PushFace(vertexData, LEFT_FACE, relativePos);
 		}
+		auto generationEnd = duration_cast<microseconds>(high_resolution_clock::now() - generationStart);
 
+		auto bufferStart = high_resolution_clock::now();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexData.size(), vertexData.data(), GL_DYNAMIC_DRAW);
+		auto bufferEnd = duration_cast<microseconds>(high_resolution_clock::now() - bufferStart);
 
-		m_verticesCount = vertCount;
+		m_verticesCount = vertexData.size();
+
+		std::cout << "Generation: " << generationEnd << "us. Buffer:" << bufferEnd << "us\n";
 	}
 
 private:
@@ -109,4 +106,14 @@ private:
 	std::unordered_map<glm::ivec3, bool, VecHasher<int, 3>> m_blocks;
 	glm::ivec2 m_position{};
 	glm::ivec2 m_dimensions{};
+
+	void PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos)
+	{
+		for (size_t i = 0; i < 18; i += 3)
+		{
+			result.push_back(data[i + 0] + relativePos.x);
+			result.push_back(data[i + 1] + relativePos.y);
+			result.push_back(data[i + 2] + relativePos.z);
+		}
+	}
 };
