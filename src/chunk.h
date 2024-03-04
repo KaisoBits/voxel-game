@@ -95,7 +95,7 @@ public:
 
 		m_verticesCount = vertexData.size();
 
-		std::cout << "Generation: " << generationEnd << "us. Buffer:" << bufferEnd << "us\n";
+		std::cout << "Generation: " << generationEnd << ". Buffer:" << bufferEnd << '\n';
 	}
 
 private:
