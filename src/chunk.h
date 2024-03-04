@@ -22,10 +22,10 @@ public:
 
 		glGenBuffers(1, &m_meshVbo);
 		glBindBuffer(GL_ARRAY_BUFFER, m_meshVbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, nullptr);
 		glEnableVertexAttribArray(0);
-		//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, reinterpret_cast<void*>(sizeof(float) * 3));
-		//glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, reinterpret_cast<void*>(sizeof(float) * 3));
+		glEnableVertexAttribArray(1);
 	}
 
 	void UpdateVoxel(glm::ivec3 coordinate, bool set)
@@ -109,11 +109,17 @@ private:
 
 	void PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos)
 	{
-		for (size_t i = 0; i < 18; i += 3)
+		for (size_t i = 0; i < 36; i += 6)
 		{
+			// positions
 			result.push_back(data[i + 0] + relativePos.x);
 			result.push_back(data[i + 1] + relativePos.y);
 			result.push_back(data[i + 2] + relativePos.z);
+
+			// normals
+			result.push_back(data[i + 3]);
+			result.push_back(data[i + 4]);
+			result.push_back(data[i + 5]);
 		}
 	}
 };
