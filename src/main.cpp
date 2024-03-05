@@ -15,7 +15,7 @@
 constexpr int windowWidth = 800;
 constexpr int windowHeight = static_cast<int>(windowWidth * (9.0 / 16.0));
 
-Camera mainCam(50, static_cast<float>(windowWidth) / windowHeight);
+Camera mainCam(75.0f, static_cast<float>(windowWidth) / windowHeight);
 constexpr float mouseSensitivity = 0.4f;
 
 void windowSizeChangeCallback(GLFWwindow* window, int newWidth, int newHeight);
@@ -69,8 +69,6 @@ int main(int argc, char** argv)
 
 	World world(glm::ivec3(10, 10, 10));
 
-	glm::mat4 perspective = glm::perspective(90.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
-
 	double period = 0.00;
 	double lastSpawn = glfwGetTime();
 
@@ -114,8 +112,12 @@ int main(int argc, char** argv)
 
 		handleCameraMovement(window, static_cast<float>(deltaTime));
 
+		int windowWidth, windowHeight;
+		glfwGetWindowSize(window, &windowWidth, &windowHeight);
+
 		glm::mat4 model = glm::mat4(1); // glm::rotate(glm::mat4(1.0f), static_cast<float>(glfwGetTime()) / 2.0f, glm::vec3(0, 1.0f, 0));
 		glm::mat4 view = mainCam.GetMatrix(); // glm::translate(glm::mat4(1), -glm::vec3(0, sin(0) * 3, 3));
+		glm::mat4 perspective = glm::perspective(glm::radians(mainCam.GetFovY()), static_cast<float>(windowWidth) / windowHeight, 0.1f, 1000.0f);
 
 		shader.SetMat4("model", model);
 		shader.SetMat4("view", view);
