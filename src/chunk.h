@@ -16,7 +16,7 @@ class Chunk
 {
 public:
 	explicit Chunk() {}
-	explicit Chunk(glm::ivec2 dimensions) : m_dimensions(dimensions)
+	explicit Chunk(glm::ivec3 dimensions) : m_dimensions(dimensions)
 	{
 		glGenVertexArrays(1, &m_meshVao);
 		glBindVertexArray(m_meshVao);
@@ -51,8 +51,8 @@ public:
 
 	void Draw(Shader& shader) const
 	{
-		glm::ivec2 globalPos = m_position * m_dimensions;
-		shader.SetVec3("chunkPos", glm::vec3(globalPos.x, 0, globalPos.y));
+		glm::ivec3 globalPos = m_position * m_dimensions;
+		shader.SetVec3("chunkPos", globalPos);
 
 		glBindVertexArray(m_meshVao);
 		glDrawArrays(GL_TRIANGLES, 0, m_verticesCount);
@@ -75,7 +75,7 @@ public:
 		for (auto& pair : m_blocks)
 		{
 			glm::ivec3 relativePos = pair.first;
-			glm::ivec3 globalPos = glm::ivec3(m_position.x * m_dimensions.x, 0, m_position.y * m_dimensions.y) + relativePos;
+			glm::ivec3 globalPos = m_position + relativePos;
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, 1)))
 				PushFace(vertexData, FRONT_FACE, relativePos);
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)))
@@ -106,8 +106,8 @@ private:
 	unsigned int m_meshVbo = 0;
 
 	std::unordered_map<glm::ivec3, bool, VecHasher<int, 3>> m_blocks;
-	glm::ivec2 m_position{};
-	glm::ivec2 m_dimensions{};
+	glm::ivec3 m_position{};
+	glm::ivec3 m_dimensions{};
 
 	void PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos)
 	{

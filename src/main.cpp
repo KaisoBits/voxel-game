@@ -60,16 +60,16 @@ int main(int argc, char** argv)
 	Shader shader = Shader::Create("shaders/main.vert", "shaders/main.frag");
 	shader.Use();
 
-	World world(100, 100);
+	World world(glm::ivec3(20, 20, 20));
 
-	glm::mat4 perspective = glm::perspective(90.0f, 16.0f / 9.0f, 0.1f, 3000.0f);
+	glm::mat4 perspective = glm::perspective(90.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 
 	double period = 0.00;
 	double lastSpawn = glfwGetTime();
 
-	size_t x = 1;
-	size_t y = 1;
-	size_t z = 1;
+	size_t x = 0;
+	size_t y = 0;
+	size_t z = 0;
 	bool done = false;
 
 	double lastTime = glfwGetTime();
@@ -86,24 +86,25 @@ int main(int argc, char** argv)
 		{
 			lastSpawn = now;
 
-			if (x > 90)
+			if (x > 19)
 			{
-				x = 1;
+				x = 0;
 				y++;
 			}
-			if (y > 20)
+			if (y > 19)
 			{
-				y = 1;
+				y = 0;
 				z++;
 			}
-			if (z > 90)
+			if (z > 19)
 			{
 				done = true;
+				continue;
 			}
 
-			x++;
-
 			world.UpdateVoxel(glm::ivec3(x, y, z), true);
+
+			x++;
 		}
 
 		handleCameraMovement(window, static_cast<float>(deltaTime));

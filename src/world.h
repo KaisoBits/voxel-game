@@ -13,16 +13,15 @@
 class World : public IBlockProvider
 {
 public:
-	explicit World(int chunkWidth, int chunkDepth)
-		: m_chunkWidth(chunkWidth), m_chunkDepth(chunkDepth)
+	explicit World(glm::ivec3 chunkDimensions)
+		: m_chunkDimensions(chunkDimensions)
 	{
-		m_chunks.emplace(glm::ivec2(0), glm::ivec2(chunkWidth, chunkDepth)); // Default chunk for testing 
+		m_chunks.emplace(glm::ivec3(0), Chunk(chunkDimensions)); // Default chunk for testing
 	}
 
 	void UpdateVoxel(glm::ivec3 coordinate, bool set)
 	{
-		glm::ivec2 chunkPos = glm::ivec2(coordinate.x / m_chunkWidth, coordinate.z / m_chunkDepth);
-		glm::ivec3 inChunkPos = glm::ivec3(coordinate.x % m_chunkWidth, coordinate.y, coordinate.z % m_chunkDepth);
+		glm::ivec3 chunkPos = coordinate / m_chunkDimensions;
 
 		auto it = m_chunks.find(chunkPos);
 		if (it == m_chunks.end())
@@ -32,6 +31,7 @@ public:
 		else
 		{
 			Chunk& chunk = it->second;
+			glm::ivec3 inChunkPos = coordinate % m_chunkDimensions;
 			chunk.UpdateVoxel(inChunkPos, set);
 			m_dirtyChunks.insert(chunkPos);
 		}
@@ -39,16 +39,13 @@ public:
 
 	virtual bool GetVoxel(glm::ivec3 coordinate) const override
 	{
-		glm::ivec2 chunkPos = glm::ivec2(coordinate.x / m_chunkWidth, coordinate.z / m_chunkDepth);
+		glm::ivec3 chunkPos = coordinate / m_chunkDimensions;
 		auto it = m_chunks.find(chunkPos);
 		if (it == m_chunks.end())
-		{
-			std::cout << "Failed to find chunk at " << chunkPos.x << " : " << chunkPos.y << '\n';
 			return false;
-		}
 
 		const Chunk& chunk = it->second;
-		glm::ivec3 inChunkPos = glm::ivec3(coordinate.x % m_chunkWidth, coordinate.y, coordinate.z % m_chunkDepth);
+		glm::ivec3 inChunkPos = coordinate % m_chunkDimensions;
 		return chunk.GetVoxel(inChunkPos);
 	}
 
@@ -67,8 +64,7 @@ public:
 	}
 
 private:
-	int m_chunkWidth;
-	int m_chunkDepth;
-	std::unordered_map<glm::ivec2, Chunk, VecHasher<int, 2>> m_chunks;
-	std::unordered_set<glm::ivec2, VecHasher<int, 2>> m_dirtyChunks;
+	glm::ivec3 m_chunkDimensions;
+	std::unordered_map<glm::ivec3, Chunk, VecHasher<int, 3>> m_chunks;
+	std::unordered_set<glm::ivec3, VecHasher<int, 3>> m_dirtyChunks;
 };
