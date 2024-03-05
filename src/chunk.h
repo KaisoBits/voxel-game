@@ -131,9 +131,9 @@ private:
 		for (size_t i = 0; i < vertLen; i += 8)
 		{
 			// positions
-			result.push_back(data[i + 0] * 1.02f + relativePos.x);
-			result.push_back(data[i + 1] * 1.02f + relativePos.y);
-			result.push_back(data[i + 2] * 1.02f + relativePos.z);
+			result.push_back(data[i + 0] * 1.001f + relativePos.x);
+			result.push_back(data[i + 1] * 1.001f + relativePos.y);
+			result.push_back(data[i + 2] * 1.001f + relativePos.z);
 
 			// normals
 			result.push_back(data[i + 3]);
