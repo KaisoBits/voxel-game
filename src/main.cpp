@@ -75,8 +75,6 @@ int main(int argc, char** argv)
 	size_t x = 0;
 	size_t y = 0;
 	size_t z = 0;
-	bool done = false;
-
 	while (true)
 	{
 		if (x > 100)
@@ -91,11 +89,13 @@ int main(int argc, char** argv)
 		}
 		if (z > 100)
 		{
-			done = true;
 			break;
 		}
 
-		world.UpdateVoxel(glm::ivec3(x, y, z), true);
+		if (y == 30)
+			world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(1, 1));
+		else
+			world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(0, 2));
 
 		x++;
 	}
@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 				{
 					for (int z = -2; z <= 2; z++)
 					{
-						world.UpdateVoxel(glm::ivec3(camPos) + glm::ivec3(x, y, z), false);
+						world.UpdateVoxel(glm::ivec3(camPos) + glm::ivec3(x, y, z), glm::ivec2(-1));
 					}
 				}
 			}

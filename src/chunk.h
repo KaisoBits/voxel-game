@@ -32,11 +32,12 @@ public:
 		glEnableVertexAttribArray(2);
 	}
 
-	bool UpdateVoxel(glm::ivec3 coordinate, bool set)
+	bool UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate)
 	{
-		if (!set)
+		auto it = m_blocks.find(coordinate);
+
+		if (textureCoordinate == glm::ivec2(-1))
 		{
-			auto it = m_blocks.find(coordinate);
 			if (it != m_blocks.end())
 			{
 				m_blocks.erase(it);
@@ -49,19 +50,18 @@ public:
 		}
 		else
 		{
-			bool result = m_blocks[coordinate];
-			if (result)
+			if (it != m_blocks.end() && it->second == textureCoordinate)
 				return false;
 
-			m_blocks[coordinate] = true;
+			m_blocks[coordinate] = textureCoordinate;
 			return true;
 		}
 	}
 
-	bool GetVoxel(glm::ivec3 coordinate) const
+	glm::vec2 GetVoxel(glm::ivec3 coordinate) const
 	{
 		auto it = m_blocks.find(coordinate);
-		return it != m_blocks.end() && it->second;
+		return it == m_blocks.end() ? glm::ivec2(-1) : it->second;
 	}
 
 	void Draw(Shader& shader) const
@@ -87,22 +87,21 @@ public:
 
 		auto generationStart = high_resolution_clock::now();
 
-		for (auto& pair : m_blocks)
+		for (auto& [relativePos, textureCoord] : m_blocks)
 		{
-			glm::ivec3 relativePos = pair.first;
 			glm::ivec3 globalPos = m_position * m_dimensions + relativePos;
-			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, 1)))
-				PushFace(vertexData, FRONT_FACE, relativePos);
-			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)))
-				PushFace(vertexData, BACK_FACE, relativePos);
-			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 1, 0)))
-				PushFace(vertexData, TOP_FACE, relativePos);
-			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, -1, 0)))
-				PushFace(vertexData, BOTTOM_FACE, relativePos);
-			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(1, 0, 0)))
-				PushFace(vertexData, RIGHT_FACE, relativePos);
-			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(-1, 0, 0)))
-				PushFace(vertexData, LEFT_FACE, relativePos);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, 1)) == glm::ivec2(-1))
+				PushFace(vertexData, FRONT_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)) == glm::ivec2(-1))
+				PushFace(vertexData, BACK_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 1, 0)) == glm::ivec2(-1))
+				PushFace(vertexData, TOP_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, -1, 0)) == glm::ivec2(-1))
+				PushFace(vertexData, BOTTOM_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(1, 0, 0)) == glm::ivec2(-1))
+				PushFace(vertexData, RIGHT_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(-1, 0, 0)) == glm::ivec2(-1))
+				PushFace(vertexData, LEFT_FACE, relativePos, textureCoord);
 		}
 		auto generationEnd = duration_cast<microseconds>(high_resolution_clock::now() - generationStart);
 
@@ -120,11 +119,11 @@ private:
 	unsigned int m_verticesCount = 0;
 	unsigned int m_meshVbo = 0;
 
-	std::unordered_map<glm::ivec3, bool, VecHasher<int, 3>> m_blocks;
+	std::unordered_map<glm::ivec3, glm::ivec2, VecHasher<int, 3>> m_blocks;
 	glm::ivec3 m_position{};
 	glm::ivec3 m_dimensions{};
 
-	void PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos)
+	void PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos, glm::ivec2 textureCoord)
 	{
 		constexpr size_t vertLen = std::size(FRONT_FACE);
 
@@ -146,8 +145,8 @@ private:
 
 			float x = 1 / tileX;
 			float y = 1 / tileY;
-			result.push_back(data[i + 6] / tileX + x * 4);
-			result.push_back(data[i + 7] / tileY + y * 7);
+			result.push_back(data[i + 6] / tileX + x * textureCoord.x);
+			result.push_back(data[i + 7] / tileY + y * textureCoord.y);
 		}
 	}
 };

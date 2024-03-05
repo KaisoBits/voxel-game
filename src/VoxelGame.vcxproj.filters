@@ -93,5 +93,6 @@
     <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />
+    <EmbeddedResource Include="shaders/**" />
   </ItemGroup>
 </Project>

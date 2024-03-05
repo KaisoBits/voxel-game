@@ -18,7 +18,7 @@ public:
 	{
 	}
 
-	void UpdateVoxel(glm::ivec3 coordinate, bool set)
+	void UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate)
 	{
 		glm::ivec3 chunkPos = coordinate / m_chunkDimensions;
 
@@ -32,7 +32,7 @@ public:
 		Chunk& chunk = it->second;
 		glm::ivec3 inChunkPos = coordinate % m_chunkDimensions;
 
-		if (chunk.UpdateVoxel(inChunkPos, set))
+		if (chunk.UpdateVoxel(inChunkPos, textureCoordinate))
 		{
 			m_dirtyChunks.insert(chunkPos);
 
@@ -52,12 +52,12 @@ public:
 		}
 	}
 
-	virtual bool GetVoxel(glm::ivec3 coordinate) const override
+	virtual glm::ivec2 GetVoxel(glm::ivec3 coordinate) const override
 	{
 		glm::ivec3 chunkPos = coordinate / m_chunkDimensions;
 		auto it = m_chunks.find(chunkPos);
 		if (it == m_chunks.end())
-			return false;
+			return glm::ivec2(-1);
 
 		const Chunk& chunk = it->second;
 		glm::ivec3 inChunkPos = coordinate % m_chunkDimensions;
