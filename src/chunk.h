@@ -70,8 +70,6 @@ public:
 
 		std::vector<float> vertexData;
 
-		constexpr size_t vertLen = std::size(FRONT_FACE);
-
 		auto generationStart = high_resolution_clock::now();
 
 		for (auto& pair : m_blocks)
@@ -113,7 +111,9 @@ private:
 
 	void PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos)
 	{
-		for (size_t i = 0; i < 36; i += 6)
+		constexpr size_t vertLen = std::size(FRONT_FACE);
+
+		for (size_t i = 0; i < vertLen; i += 6)
 		{
 			// positions
 			result.push_back(data[i + 0] + relativePos.x);
