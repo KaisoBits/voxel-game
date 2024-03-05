@@ -143,7 +143,7 @@ void handleCameraMovement(GLFWwindow* window, float deltaTime)
 	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		position -= forwardVectorJustYaw * deltaTime * speed;
 
-	const glm::vec3 right = glm::cross(forwardVectorJustYaw, up);
+	const glm::vec3 right = mainCam.Right();
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		position += right * deltaTime * speed;
 	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
