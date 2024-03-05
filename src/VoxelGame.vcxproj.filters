@@ -54,6 +54,9 @@
     <ClCompile Include="chunk.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="texture.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\vendor\imgui\src\imgui.natvis">
@@ -86,6 +89,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />

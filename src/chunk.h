@@ -16,30 +16,45 @@ class Chunk
 {
 public:
 	explicit Chunk() {}
-	explicit Chunk(glm::ivec3 dimensions) : m_dimensions(dimensions)
+	explicit Chunk(glm::ivec3 dimensions, glm::ivec3 position)
+		: m_dimensions(dimensions), m_position(position)
 	{
 		glGenVertexArrays(1, &m_meshVao);
 		glBindVertexArray(m_meshVao);
 
 		glGenBuffers(1, &m_meshVbo);
 		glBindBuffer(GL_ARRAY_BUFFER, m_meshVbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, nullptr);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, nullptr);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, reinterpret_cast<void*>(sizeof(float) * 3));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, reinterpret_cast<void*>(sizeof(float) * 3));
 		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, reinterpret_cast<void*>(sizeof(float) * 6));
+		glEnableVertexAttribArray(2);
 	}
 
-	void UpdateVoxel(glm::ivec3 coordinate, bool set)
+	bool UpdateVoxel(glm::ivec3 coordinate, bool set)
 	{
 		if (!set)
 		{
 			auto it = m_blocks.find(coordinate);
 			if (it != m_blocks.end())
+			{
 				m_blocks.erase(it);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
+			bool result = m_blocks[coordinate];
+			if (result)
+				return false;
+
 			m_blocks[coordinate] = true;
+			return true;
 		}
 	}
 
@@ -75,7 +90,7 @@ public:
 		for (auto& pair : m_blocks)
 		{
 			glm::ivec3 relativePos = pair.first;
-			glm::ivec3 globalPos = m_position + relativePos;
+			glm::ivec3 globalPos = m_position * m_dimensions + relativePos;
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, 1)))
 				PushFace(vertexData, FRONT_FACE, relativePos);
 			if (!blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)))
@@ -97,7 +112,7 @@ public:
 
 		m_verticesCount = vertexData.size();
 
-		std::cout << "Generation: " << generationEnd << ". Buffer:" << bufferEnd << '\n';
+		// std::cout << "Generation: " << generationEnd << ". Buffer:" << bufferEnd << '\n';
 	}
 
 private:
@@ -113,17 +128,26 @@ private:
 	{
 		constexpr size_t vertLen = std::size(FRONT_FACE);
 
-		for (size_t i = 0; i < vertLen; i += 6)
+		for (size_t i = 0; i < vertLen; i += 8)
 		{
 			// positions
-			result.push_back(data[i + 0] + relativePos.x);
-			result.push_back(data[i + 1] + relativePos.y);
-			result.push_back(data[i + 2] + relativePos.z);
+			result.push_back(data[i + 0] * 1.02f + relativePos.x);
+			result.push_back(data[i + 1] * 1.02f + relativePos.y);
+			result.push_back(data[i + 2] * 1.02f + relativePos.z);
 
 			// normals
 			result.push_back(data[i + 3]);
 			result.push_back(data[i + 4]);
 			result.push_back(data[i + 5]);
+
+			// uv
+			constexpr float tileX = 64.0f;
+			constexpr float tileY = 32.0f;
+
+			float x = 1 / tileX;
+			float y = 1 / tileY;
+			result.push_back(data[i + 6] / tileX + x * 4);
+			result.push_back(data[i + 7] / tileY + y * 7);
 		}
 	}
 };

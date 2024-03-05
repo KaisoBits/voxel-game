@@ -7,11 +7,15 @@
 #include "world.h"
 #include "shader.h"
 #include "camera.h"
+#include "texture.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
 
 constexpr int windowWidth = 800;
 constexpr int windowHeight = static_cast<int>(windowWidth * (9.0 / 16.0));
 
-Camera mainCam(75, static_cast<float>(windowWidth) / windowHeight);
+Camera mainCam(50, static_cast<float>(windowWidth) / windowHeight);
 constexpr float mouseSensitivity = 0.4f;
 
 void windowSizeChangeCallback(GLFWwindow* window, int newWidth, int newHeight);
@@ -57,10 +61,13 @@ int main(int argc, char** argv)
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(52 / 255.0f, 152 / 255.0f, 219 / 255.0f, 1.0f);
 
+	Texture blocks = Texture::Load("resources/textures/minecraft-textures.png", false);
+	blocks.Use(0);
+
 	Shader shader = Shader::Create("shaders/main.vert", "shaders/main.frag");
 	shader.Use();
 
-	World world(glm::ivec3(20, 20, 20));
+	World world(glm::ivec3(10, 10, 10));
 
 	glm::mat4 perspective = glm::perspective(90.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 
@@ -72,6 +79,29 @@ int main(int argc, char** argv)
 	size_t z = 0;
 	bool done = false;
 
+	while (true)
+	{
+		if (x > 100)
+		{
+			x = 0;
+			y++;
+		}
+		if (y > 30)
+		{
+			y = 0;
+			z++;
+		}
+		if (z > 100)
+		{
+			done = true;
+			break;
+		}
+
+		world.UpdateVoxel(glm::ivec3(x, y, z), true);
+
+		x++;
+	}
+
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window))
 	{
@@ -81,31 +111,6 @@ int main(int argc, char** argv)
 		double now = glfwGetTime();
 		double deltaTime = fmin(now - lastTime, 0.3f);
 		lastTime = now;
-
-		if (now - lastSpawn > period && !done)
-		{
-			lastSpawn = now;
-
-			if (x > 19)
-			{
-				x = 0;
-				y++;
-			}
-			if (y > 19)
-			{
-				y = 0;
-				z++;
-			}
-			if (z > 19)
-			{
-				done = true;
-				continue;
-			}
-
-			world.UpdateVoxel(glm::ivec3(x, y, z), true);
-
-			x++;
-		}
 
 		handleCameraMovement(window, static_cast<float>(deltaTime));
 
@@ -118,6 +123,22 @@ int main(int argc, char** argv)
 
 		world.ApplyChanges();
 		world.Draw(shader);
+
+		glm::vec3 camPos = mainCam.GetPosition() + glm::vec3(0.5f);
+
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE)
+		{
+			for (int x = -2; x < 2; x++)
+			{
+				for (int y = -2; y <= 2; y++)
+				{
+					for (int z = -2; z <= 2; z++)
+					{
+						world.UpdateVoxel(glm::ivec3(camPos) + glm::ivec3(x, y, z), false);
+					}
+				}
+			}
+		}
 
 		glfwSwapBuffers(window);
 	}
@@ -132,7 +153,7 @@ void handleCameraMovement(GLFWwindow* window, float deltaTime)
 	constexpr glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	float speed = (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) ?
-		100.0f : 40.0f;
+		4.0f : 40.0f;
 
 	glm::vec3 position = mainCam.GetPosition();
 

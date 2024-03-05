@@ -16,7 +16,6 @@ public:
 	explicit World(glm::ivec3 chunkDimensions)
 		: m_chunkDimensions(chunkDimensions)
 	{
-		m_chunks.emplace(glm::ivec3(0), Chunk(chunkDimensions)); // Default chunk for testing
 	}
 
 	void UpdateVoxel(glm::ivec3 coordinate, bool set)
@@ -26,14 +25,30 @@ public:
 		auto it = m_chunks.find(chunkPos);
 		if (it == m_chunks.end())
 		{
-			std::cout << "Failed to find chunk at " << chunkPos.x << " : " << chunkPos.y << '\n';
+			m_chunks.emplace(chunkPos, Chunk(m_chunkDimensions, chunkPos));
+			it = m_chunks.find(chunkPos);
 		}
-		else
+
+		Chunk& chunk = it->second;
+		glm::ivec3 inChunkPos = coordinate % m_chunkDimensions;
+
+		if (chunk.UpdateVoxel(inChunkPos, set))
 		{
-			Chunk& chunk = it->second;
-			glm::ivec3 inChunkPos = coordinate % m_chunkDimensions;
-			chunk.UpdateVoxel(inChunkPos, set);
 			m_dirtyChunks.insert(chunkPos);
+
+			// TODO: Optimize for non edge voxels
+			if (m_chunks.contains(chunkPos + glm::ivec3(0, 0, 1)))
+				m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 0, 1));
+			if (m_chunks.contains(chunkPos + glm::ivec3(0, 0, -1)))
+				m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 0, -1));
+			if (m_chunks.contains(chunkPos + glm::ivec3(0, 1, 0)))
+				m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 1, 0));
+			if (m_chunks.contains(chunkPos + glm::ivec3(0, -1, 0)))
+				m_dirtyChunks.insert(chunkPos + glm::ivec3(0, -1, 0));
+			if (m_chunks.contains(chunkPos + glm::ivec3(1, 0, 0)))
+				m_dirtyChunks.insert(chunkPos + glm::ivec3(1, 0, 0));
+			if (m_chunks.contains(chunkPos + glm::ivec3(-1, 0, 0)))
+				m_dirtyChunks.insert(chunkPos + glm::ivec3(-1, 0, 0));
 		}
 	}
 
