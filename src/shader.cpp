@@ -1,3 +1,12 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "shader.h"
 
 Shader Shader::Create(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)

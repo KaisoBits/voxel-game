@@ -1,3 +1,12 @@
+#include <unordered_set>
+#include <unordered_map>
+#include <glm/glm.hpp>
+
+#include "chunk.h"
+#include "shader.h"
+#include "vechasher.h"
+#include "blockprovider.h"
+
 #include "world.h"
 
 World::World(glm::ivec3 chunkDimensions)

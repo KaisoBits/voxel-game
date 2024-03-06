@@ -1,8 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <unordered_set>
-#include <unordered_set>
+#include <unordered_map>
 #include <glm/glm.hpp>
 
 #include "chunk.h"

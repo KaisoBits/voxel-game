@@ -9,9 +9,6 @@
 #include "camera.h"
 #include "texture.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
-
 constexpr int windowWidth = 800;
 constexpr int windowHeight = static_cast<int>(windowWidth * (9.0 / 16.0));
 

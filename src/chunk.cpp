@@ -1,3 +1,15 @@
+#include <glm/glm.hpp>
+#include <glad/glad.h>
+#include <unordered_map>
+#include <vector>
+#include <chrono>
+#include <iostream>
+
+#include "vechasher.h"
+#include "shader.h"
+#include "blockprovider.h"
+#include "blockdata.h"
+
 #include "chunk.h"
 
 Chunk::Chunk(glm::ivec3 dimensions, glm::ivec3 position)
