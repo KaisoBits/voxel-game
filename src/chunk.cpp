@@ -117,9 +117,9 @@ void Chunk::PushFace(std::vector<float>& result, const float data[], glm::vec3 r
 	for (size_t i = 0; i < vertLen; i += 8)
 	{
 		// positions
-		result.push_back(data[i + 0] * 1.001f + relativePos.x);
-		result.push_back(data[i + 1] * 1.001f + relativePos.y);
-		result.push_back(data[i + 2] * 1.001f + relativePos.z);
+		result.push_back(data[i + 0] + relativePos.x);
+		result.push_back(data[i + 1] + relativePos.y);
+		result.push_back(data[i + 2] + relativePos.z);
 
 		// normals
 		result.push_back(data[i + 3]);
