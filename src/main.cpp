@@ -30,7 +30,6 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_SAMPLES, 8);
 
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Voxel", nullptr, nullptr);
 	if (!window)
@@ -55,7 +54,6 @@ int main(int argc, char** argv)
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_MULTISAMPLE);
 	glClearColor(52 / 255.0f, 152 / 255.0f, 219 / 255.0f, 1.0f);
 
 	Texture blocks = Texture::Load("resources/textures/minecraft-textures.png", false);
