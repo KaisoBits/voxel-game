@@ -159,6 +159,7 @@
     <ClCompile Include="chunk.cpp" />
     <ClCompile Include="chunk.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="texture.cpp" />
     <ClCompile Include="texture.h" />
     <ClCompile Include="world.cpp" />
   </ItemGroup>
