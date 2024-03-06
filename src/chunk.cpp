@@ -105,7 +105,7 @@ void Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexData.size(), vertexData.data(), GL_DYNAMIC_DRAW);
 	auto bufferEnd = duration_cast<microseconds>(high_resolution_clock::now() - bufferStart);
 
-	m_verticesCount = vertexData.size();
+	m_verticesCount = static_cast<unsigned int>(vertexData.size());
 
 	// std::cout << "Generation: " << generationEnd << ". Buffer:" << bufferEnd << '\n';
 }
