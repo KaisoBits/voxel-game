@@ -160,6 +160,7 @@
     <ClCompile Include="chunk.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="texture.h" />
+    <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="shaders/**">
