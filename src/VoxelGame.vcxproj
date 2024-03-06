@@ -98,6 +98,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,6 +137,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
