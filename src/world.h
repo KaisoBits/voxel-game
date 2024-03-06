@@ -67,7 +67,7 @@ public:
 	void ApplyChanges()
 	{
 		for (auto& chunkPos : m_dirtyChunks)
-			m_chunks[chunkPos].GenerateMesh(*this);
+			m_chunks.at(chunkPos).GenerateMesh(*this);
 
 		m_dirtyChunks.clear();
 	}

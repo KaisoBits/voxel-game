@@ -156,6 +156,7 @@
     <ClCompile Include="..\vendor\imgui\src\imgui_stdlib.cpp" />
     <ClCompile Include="..\vendor\imgui\src\imgui_tables.cpp" />
     <ClCompile Include="..\vendor\imgui\src\imgui_widgets.cpp" />
+    <ClCompile Include="chunk.cpp" />
     <ClCompile Include="chunk.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="texture.h" />
