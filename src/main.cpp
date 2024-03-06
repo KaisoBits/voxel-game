@@ -67,9 +67,9 @@ int main(int argc, char** argv)
 	double period = 0.00;
 	double lastSpawn = glfwGetTime();
 
-	for (size_t x = 0; x <= 500; x++)
+	for (size_t x = 0; x <= 100; x++)
 		for (size_t y = 0; y <= 30; y++)
-			for (size_t z = 0; z <= 500; z++)
+			for (size_t z = 0; z <= 100; z++)
 			{
 				if (y == 30)
 					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(1, 1));
