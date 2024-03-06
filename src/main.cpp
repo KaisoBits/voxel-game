@@ -64,38 +64,20 @@ int main(int argc, char** argv)
 	Shader shader = Shader::Create("shaders/main.vert", "shaders/main.frag");
 	shader.Use();
 
-	World world(glm::ivec3(10, 10, 10));
+	World world(glm::ivec3(15, 15, 15));
 
 	double period = 0.00;
 	double lastSpawn = glfwGetTime();
 
-	size_t x = 0;
-	size_t y = 0;
-	size_t z = 0;
-	while (true)
-	{
-		if (x > 100)
-		{
-			x = 0;
-			y++;
-		}
-		if (y > 30)
-		{
-			y = 0;
-			z++;
-		}
-		if (z > 100)
-		{
-			break;
-		}
-
-		if (y == 30)
-			world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(1, 1));
-		else
-			world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(0, 2));
-
-		x++;
-	}
+	for (size_t x = 0; x <= 500; x++)
+		for (size_t y = 0; y <= 30; y++)
+			for (size_t z = 0; z <= 500; z++)
+			{
+				if (y == 30)
+					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(1, 1));
+				else
+					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(0, 2));
+			}
 
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window))
