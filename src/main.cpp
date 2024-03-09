@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 		glfwPollEvents();
 
 		double now = glfwGetTime();
-		double deltaTime = fmin(now - lastTime, 0.3f);
+		double deltaTime = fmin(now - lastTime, 0.3);
 		lastTime = now;
 
 		handleCameraMovement(window, static_cast<float>(deltaTime));
@@ -108,15 +108,9 @@ int main(int argc, char** argv)
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE)
 		{
 			for (int x = -2; x < 2; x++)
-			{
 				for (int y = -2; y <= 2; y++)
-				{
 					for (int z = -2; z <= 2; z++)
-					{
 						world.UpdateVoxel(glm::ivec3(camPos) + glm::ivec3(x, y, z), glm::ivec2(-1));
-					}
-				}
-			}
 		}
 
 		glfwSwapBuffers(window);
