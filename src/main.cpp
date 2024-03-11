@@ -66,9 +66,6 @@ int main(int argc, char** argv)
 
 	World world(glm::ivec3(16, 16, 16));
 
-	double period = 0.00;
-	double lastSpawn = glfwGetTime();
-
 	const siv::PerlinNoise::seed_type seed = 123456u;
 	const siv::PerlinNoise perlin{ seed };
 
