@@ -11,8 +11,8 @@
 #include "camera.h"
 #include "texture.h"
 
-constexpr int windowWidth = 800;
-constexpr int windowHeight = static_cast<int>(windowWidth * (9.0 / 16.0));
+int windowWidth = 800;
+int windowHeight = static_cast<int>(windowWidth * (9.0 / 16.0));
 
 Camera mainCam(75.0f, static_cast<float>(windowWidth) / windowHeight);
 constexpr float mouseSensitivity = 0.4f;
@@ -31,6 +31,7 @@ int main(int argc, char** argv)
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Voxel", nullptr, nullptr);
@@ -99,11 +100,8 @@ int main(int argc, char** argv)
 
 		handleCameraMovement(window, static_cast<float>(deltaTime));
 
-		int windowWidth, windowHeight;
-		glfwGetWindowSize(window, &windowWidth, &windowHeight);
-
-		glm::mat4 model = glm::mat4(1); // glm::rotate(glm::mat4(1.0f), static_cast<float>(glfwGetTime()) / 2.0f, glm::vec3(0, 1.0f, 0));
-		glm::mat4 view = mainCam.GetMatrix(); // glm::translate(glm::mat4(1), -glm::vec3(0, sin(0) * 3, 3));
+		glm::mat4 model = glm::mat4(1);
+		glm::mat4 view = mainCam.GetMatrix();
 		glm::mat4 perspective = glm::perspective(glm::radians(mainCam.GetFovY()), static_cast<float>(windowWidth) / windowHeight, 0.1f, 1000.0f);
 
 		shader.SetMat4("model", model);
@@ -165,6 +163,9 @@ void windowSizeChangeCallback(GLFWwindow* window, int newWidth, int newHeight)
 {
 	if (newWidth == 0 || newHeight == 0) // ignore minimizing
 		return;
+
+	windowWidth = newWidth;
+	windowHeight = newHeight;
 
 	glViewport(0, 0, newWidth, newHeight);
 	mainCam.SetAspectRatio(static_cast<float>(newWidth) / static_cast<float>(newHeight));
