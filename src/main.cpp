@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 
+#include <PerlinNoise.hpp>
+
 #include "world.h"
 #include "shader.h"
 #include "camera.h"
@@ -67,15 +69,23 @@ int main(int argc, char** argv)
 	double period = 0.00;
 	double lastSpawn = glfwGetTime();
 
+	const siv::PerlinNoise::seed_type seed = 123456u;
+	const siv::PerlinNoise perlin{ seed };
+
 	for (size_t x = 0; x <= 100; x++)
-		for (size_t y = 0; y <= 30; y++)
-			for (size_t z = 0; z <= 100; z++)
+	{
+		for (size_t z = 0; z <= 100; z++)
+		{
+			const double bonusY = perlin.noise2D(x / 15.0, z / 15.0);
+			for (size_t y = 0; y <= 30 + static_cast<size_t>(bonusY * 20); y++)
 			{
-				if (y == 30)
-					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(1, 1));
+				if (y > 30)
+					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(13, 9));
 				else
-					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(0, 2));
+					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(7, 14));
 			}
+		}
+	}
 
 	double lastTime = glfwGetTime();
 	while (!glfwWindowShouldClose(window))

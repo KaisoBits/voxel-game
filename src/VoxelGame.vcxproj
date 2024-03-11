@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;$(SolutionDir)/vendor/perlinnoise/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,7 +97,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;$(SolutionDir)/vendor/perlinnoise/include</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
@@ -117,7 +117,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;$(SolutionDir)/vendor/perlinnoise/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,7 +136,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/vendor/glad/include;$(SolutionDir)/vendor/glfw/include;$(SolutionDir)/vendor/glm/include;$(SolutionDir)/vendor/imgui/include;$(SolutionDir)/vendor/khr/include;$(SolutionDir)/vendor/stb/include;$(SolutionDir)/vendor/perlinnoise/include</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
