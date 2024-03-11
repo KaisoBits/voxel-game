@@ -113,12 +113,20 @@ int main(int argc, char** argv)
 
 		glm::vec3 camPos = mainCam.GetPosition() + glm::vec3(0.5f);
 
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE)
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
 		{
 			for (int x = -2; x < 2; x++)
 				for (int y = -2; y <= 2; y++)
 					for (int z = -2; z <= 2; z++)
 						world.UpdateVoxel(glm::ivec3(camPos) + glm::ivec3(x, y, z), glm::ivec2(-1));
+		}
+
+		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS)
+		{
+			for (int x = -2; x < 2; x++)
+				for (int y = -2; y <= 2; y++)
+					for (int z = -2; z <= 2; z++)
+						world.UpdateVoxel(glm::ivec3(camPos) + glm::ivec3(x, y, z), glm::ivec2(0, 1));
 		}
 
 		glfwSwapBuffers(window);
