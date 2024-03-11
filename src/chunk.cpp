@@ -4,6 +4,8 @@
 #include <vector>
 #include <chrono>
 #include <iostream>
+#include <execution>
+#include <mutex>
 
 #include "vechasher.h"
 #include "shader.h"
@@ -83,22 +85,34 @@ void Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 
 	auto generationStart = high_resolution_clock::now();
 
-	for (auto& [relativePos, textureCoord] : m_blocks)
-	{
-		glm::ivec3 globalPos = m_position * m_dimensions + relativePos;
-		if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, 1)) == glm::ivec2(-1))
-			PushFace(vertexData, FRONT_FACE, relativePos, textureCoord);
-		if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)) == glm::ivec2(-1))
-			PushFace(vertexData, BACK_FACE, relativePos, textureCoord);
-		if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 1, 0)) == glm::ivec2(-1))
-			PushFace(vertexData, TOP_FACE, relativePos, textureCoord);
-		if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, -1, 0)) == glm::ivec2(-1))
-			PushFace(vertexData, BOTTOM_FACE, relativePos, textureCoord);
-		if (blockProvider.GetVoxel(globalPos + glm::ivec3(1, 0, 0)) == glm::ivec2(-1))
-			PushFace(vertexData, RIGHT_FACE, relativePos, textureCoord);
-		if (blockProvider.GetVoxel(globalPos + glm::ivec3(-1, 0, 0)) == glm::ivec2(-1))
-			PushFace(vertexData, LEFT_FACE, relativePos, textureCoord);
-	}
+	std::mutex mutex;
+
+	std::for_each(std::execution::par, m_blocks.begin(), m_blocks.end(),
+		[&](const auto& voxelEntry) {
+			auto& [relativePos, textureCoord] = voxelEntry;
+
+			std::vector<float> localVertexData;
+			glm::ivec3 globalPos = m_position * m_dimensions + relativePos;
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, 1)) == glm::ivec2(-1))
+				PushFace(localVertexData, FRONT_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 0, -1)) == glm::ivec2(-1))
+				PushFace(localVertexData, BACK_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, 1, 0)) == glm::ivec2(-1))
+				PushFace(localVertexData, TOP_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(0, -1, 0)) == glm::ivec2(-1))
+				PushFace(localVertexData, BOTTOM_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(1, 0, 0)) == glm::ivec2(-1))
+				PushFace(localVertexData, RIGHT_FACE, relativePos, textureCoord);
+			if (blockProvider.GetVoxel(globalPos + glm::ivec3(-1, 0, 0)) == glm::ivec2(-1))
+				PushFace(localVertexData, LEFT_FACE, relativePos, textureCoord);
+
+			if (!localVertexData.empty())
+			{
+				std::lock_guard<std::mutex> guard(mutex);
+				vertexData.insert(vertexData.end(), localVertexData.begin(), localVertexData.end());
+			}
+		});
+
 	auto generationEnd = duration_cast<microseconds>(high_resolution_clock::now() - generationStart);
 
 	auto bufferStart = high_resolution_clock::now();
