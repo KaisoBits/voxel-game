@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 	Shader shader = Shader::Create("shaders/main.vert", "shaders/main.frag");
 	shader.Use();
 
-	World world(glm::ivec3(15, 15, 15));
+	World world(glm::ivec3(16, 16, 16));
 
 	double period = 0.00;
 	double lastSpawn = glfwGetTime();
