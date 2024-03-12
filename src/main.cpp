@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 		return -3;
 	}
 
-	mainCam.SetPosition(glm::vec3(0, 0, 10));
+	mainCam.SetPosition(glm::vec3(0, 50, 10));
 
 	glViewport(0, 0, windowWidth, windowHeight);
 	glfwSetWindowSizeCallback(window, windowSizeChangeCallback);
