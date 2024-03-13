@@ -14,7 +14,7 @@ World::World(glm::ivec3 chunkDimensions)
 {
 }
 
-void World::UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate)
+void World::UpdateVoxel(const glm::ivec3& coordinate, const glm::ivec2& textureCoordinate)
 {
 	glm::ivec3 chunkPos = coordinate / m_chunkDimensions;
 
@@ -48,7 +48,7 @@ void World::UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate)
 	}
 }
 
-glm::ivec2 World::GetVoxel(glm::ivec3 coordinate) const
+glm::ivec2 World::GetVoxel(const glm::ivec3& coordinate) const
 {
 	glm::ivec3 chunkPos = coordinate / m_chunkDimensions;
 	auto it = m_chunks.find(chunkPos);

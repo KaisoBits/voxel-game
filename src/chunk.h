@@ -12,8 +12,8 @@ class Chunk
 public:
 	explicit Chunk(glm::ivec3 dimensions, glm::ivec3 position);
 
-	bool UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate);
-	glm::vec2 GetVoxel(glm::ivec3 coordinate) const;
+	bool UpdateVoxel(const glm::ivec3& coordinate, const glm::ivec2& textureCoordinate);
+	glm::vec2 GetVoxel(const glm::ivec3& coordinate) const;
 
 	void Draw(Shader& shader) const;
 
@@ -28,5 +28,5 @@ private:
 	glm::ivec3 m_position{};
 	glm::ivec3 m_dimensions{};
 
-	void PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos, glm::ivec2 textureCoord);
+	void PushFace(std::vector<float>& result, const float data[], const glm::vec3& relativePos, const glm::ivec2& textureCoord);
 };

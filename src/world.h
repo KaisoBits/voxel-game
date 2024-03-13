@@ -14,8 +14,8 @@ class World : public IBlockProvider
 public:
 	explicit World(glm::ivec3 chunkDimensions);
 
-	void UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate);
-	virtual glm::ivec2 GetVoxel(glm::ivec3 coordinate) const override;
+	void UpdateVoxel(const glm::ivec3& coordinate, const glm::ivec2& textureCoordinate);
+	virtual glm::ivec2 GetVoxel(const glm::ivec3& coordinate) const override;
 	void ApplyChanges();
 
 	void Draw(Shader& shader) const;

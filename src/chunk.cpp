@@ -30,7 +30,7 @@ Chunk::Chunk(glm::ivec3 dimensions, glm::ivec3 position)
 	glEnableVertexAttribArray(2);
 }
 
-bool Chunk::UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate)
+bool Chunk::UpdateVoxel(const glm::ivec3& coordinate, const glm::ivec2& textureCoordinate)
 {
 	auto it = m_blocks.find(coordinate);
 
@@ -56,7 +56,7 @@ bool Chunk::UpdateVoxel(glm::ivec3 coordinate, glm::ivec2 textureCoordinate)
 	}
 }
 
-glm::vec2 Chunk::GetVoxel(glm::ivec3 coordinate) const
+glm::vec2 Chunk::GetVoxel(const glm::ivec3& coordinate) const
 {
 	auto it = m_blocks.find(coordinate);
 	return it == m_blocks.end() ? glm::ivec2(-1) : it->second;
@@ -124,7 +124,7 @@ void Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 	// std::cout << "Generation: " << generationEnd << ". Buffer:" << bufferEnd << '\n';
 }
 
-void Chunk::PushFace(std::vector<float>& result, const float data[], glm::vec3 relativePos, glm::ivec2 textureCoord)
+void Chunk::PushFace(std::vector<float>& result, const float data[], const glm::vec3& relativePos, const glm::ivec2& textureCoord)
 {
 	constexpr size_t vertLen = std::size(FRONT_FACE);
 

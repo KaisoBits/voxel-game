@@ -6,5 +6,5 @@ class IBlockProvider
 {
 public:
 	virtual ~IBlockProvider() = default;
-	virtual glm::ivec2 GetVoxel(glm::ivec3 coordinate) const = 0;
+	virtual glm::ivec2 GetVoxel(const glm::ivec3& coordinate) const = 0;
 };
