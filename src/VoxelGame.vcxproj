@@ -161,6 +161,7 @@
     <ClCompile Include="chunk.cpp" />
     <ClCompile Include="chunk.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="physicsworld.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="texture.h" />
@@ -184,6 +185,9 @@
   <ItemGroup>
     <ClInclude Include="blockdata.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="physicsobject.h" />
+    <ClInclude Include="physicsobjectref.h" />
+    <ClInclude Include="physicsworld.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="vechasher.h" />
     <ClInclude Include="world.h" />

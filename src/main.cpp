@@ -7,6 +7,8 @@
 #include <PerlinNoise.hpp>
 
 #include "world.h"
+#include "physicsworld.h"
+#include "physicsobjectref.h"
 #include "shader.h"
 #include "camera.h"
 #include "texture.h"
@@ -18,7 +20,7 @@ Camera mainCam(75.0f, static_cast<float>(windowWidth) / windowHeight);
 constexpr float mouseSensitivity = 0.4f;
 
 void windowSizeChangeCallback(GLFWwindow* window, int newWidth, int newHeight);
-void handleCameraMovement(GLFWwindow* window, float deltaTime);
+void handleCameraMovement(GLFWwindow* window, PhysicsObject& physics);
 void mouseCallback(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char** argv)
@@ -48,7 +50,7 @@ int main(int argc, char** argv)
 		return -3;
 	}
 
-	mainCam.SetPosition(glm::vec3(0, 50, 10));
+	mainCam.SetPosition(glm::vec3(70, 60, 70));
 
 	glViewport(0, 0, windowWidth, windowHeight);
 	glfwSetWindowSizeCallback(window, windowSizeChangeCallback);
@@ -65,6 +67,8 @@ int main(int argc, char** argv)
 	shader.Use();
 
 	World world(glm::ivec3(16, 16, 16));
+	PhysicsWorld physicsWorld(&world);
+	PhysicsObjectRef mainCamPhysics = physicsWorld.Reserve(mainCam.GetPosition(), glm::vec3(-1), glm::vec3(1));
 
 	const siv::PerlinNoise::seed_type seed = 123456u;
 	const siv::PerlinNoise perlin{ seed };
@@ -94,7 +98,13 @@ int main(int argc, char** argv)
 		double deltaTime = fmin(now - lastTime, 0.3);
 		lastTime = now;
 
-		handleCameraMovement(window, static_cast<float>(deltaTime));
+		PhysicsObject& cameraPhysics = mainCamPhysics.Object();
+		handleCameraMovement(window, cameraPhysics);
+
+		world.ApplyChanges();
+		physicsWorld.Tick(deltaTime);
+
+		mainCam.SetPosition(cameraPhysics.GetPosition());
 
 		glm::mat4 model = glm::mat4(1);
 		glm::mat4 view = mainCam.GetMatrix();
@@ -104,11 +114,9 @@ int main(int argc, char** argv)
 		shader.SetMat4("view", view);
 		shader.SetMat4("perspective", perspective);
 
-		world.ApplyChanges();
 		world.Draw(shader);
 
 		glm::vec3 camPos = mainCam.GetPosition() + glm::vec3(0.5f);
-
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
 		{
 			for (int x = -2; x < 2; x++)
@@ -133,34 +141,40 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void handleCameraMovement(GLFWwindow* window, float deltaTime)
+float lastJump = -1;
+void handleCameraMovement(GLFWwindow* window, PhysicsObject& physics)
 {
 	constexpr glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	float speed = (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) ?
-		4.0f : 40.0f;
+	float speed = (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ?
+		2.0f : 5.0f;
 
-	glm::vec3 position = mainCam.GetPosition();
+	glm::vec3 velocity(0);
 
 	const glm::vec3 forwardVectorJustYaw = mainCam.ForwardJustYaw();
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		position += forwardVectorJustYaw * deltaTime * speed;
+		velocity += forwardVectorJustYaw;
 	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		position -= forwardVectorJustYaw * deltaTime * speed;
+		velocity -= forwardVectorJustYaw;
 
 	const glm::vec3 right = mainCam.Right();
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		position += right * deltaTime * speed;
+		velocity += right;
 	else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		position -= right * deltaTime * speed;
+		velocity -= right;
 
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		position += up * deltaTime * speed;
-	else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		position -= up * deltaTime * speed;
+	glm::vec3 walkDir = velocity != glm::vec3(0) ? glm::normalize(velocity) * speed : glm::vec3(0);
 
-	mainCam.SetPosition(position);
+	float y = physics.GetVelocity().y;
+	float now = glfwGetTime();
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && now - lastJump > 0.4f)
+	{
+		y = 13.0f;
+		lastJump = now;
+	}
+
+	physics.SetVelocity(glm::vec3(walkDir.x, y, walkDir.z));
 }
 
 void windowSizeChangeCallback(GLFWwindow* window, int newWidth, int newHeight)

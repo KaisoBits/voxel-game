@@ -69,6 +69,9 @@
     <ClCompile Include="shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="physicsworld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\vendor\imgui\src\imgui.natvis">
@@ -99,8 +102,18 @@
     <ClInclude Include="camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="physicsworld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physicsobjectref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physicsobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />
     <EmbeddedResource Include="shaders/**" />
