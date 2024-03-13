@@ -10,12 +10,20 @@ uniform mat4 perspective = mat4(1);
 
 uniform vec3 chunkPos;
 
-flat out int darken;
+out float darken;
 out vec2 textureUv;
 
 void main()
 {
-	darken = abs(dot(normal, vec3(0, 0, -1))) > 0.1 ? 1 : 0;
+	if (abs(dot(normal, vec3(0, 0, 1))) > 0.1)
+		darken = 0.70;
+	else if (dot(normal, vec3(0, -1, 0)) > 0.1)
+		darken = 0.5;
+	else if (abs(dot(normal, vec3(0, 1, 0))) > 0.1)
+		darken = 1.0;
+	else
+		darken = 0.85;
+
 	textureUv = uv;
 	gl_Position = perspective * view * model * vec4(position + chunkPos, 1.0);
 }
