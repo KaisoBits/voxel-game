@@ -168,7 +168,7 @@ void handleCameraMovement(GLFWwindow* window, PhysicsObject& physics)
 
 	float y = physics.GetVelocity().y;
 	float now = glfwGetTime();
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && now - lastJump > 0.4f && physics.GetIsGrounded())
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && now - lastJump > 0.4f)
 	{
 		y = 13.0f;
 		lastJump = now;
