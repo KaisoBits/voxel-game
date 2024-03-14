@@ -77,8 +77,8 @@ int main(int argc, char** argv)
 	{
 		for (size_t z = 0; z <= 100; z++)
 		{
-			const double bonusY = perlin.noise2D(x / 15.0, z / 15.0);
-			for (size_t y = 0; y <= 30 + static_cast<size_t>(bonusY * 20); y++)
+			const double bonusY = perlin.noise2D(x / 35.0, z / 35.0);
+			for (size_t y = 20; y <= 30 + static_cast<size_t>(bonusY * 20); y++)
 			{
 				if (y > 30)
 					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(13, 9));
@@ -168,7 +168,7 @@ void handleCameraMovement(GLFWwindow* window, PhysicsObject& physics)
 
 	float y = physics.GetVelocity().y;
 	float now = glfwGetTime();
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && now - lastJump > 0.4f)
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && now - lastJump > 0.4f && physics.GetIsGrounded())
 	{
 		y = 13.0f;
 		lastJump = now;
