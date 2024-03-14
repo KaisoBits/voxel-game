@@ -13,12 +13,14 @@ public:
 	glm::vec3 GetVelocity() const { return m_velocity; }
 	glm::vec3 GetMins() const { return m_mins; }
 	glm::vec3 GetMaxs() const { return m_maxs; }
+	bool GetIsGrounded() const { return m_isGrounded; }
 
 	void SetDrag(float value) { drag = value; }
 	void SetPosition(const glm::vec3& value) { m_position = value; }
 	void SetVelocity(const glm::vec3& value) { m_velocity = value; }
 	void SetMins(const glm::vec3& value) { m_mins = value; }
 	void SetMaxs(const glm::vec3& value) { m_maxs = value; }
+	void SetIsGrounded(bool value) { m_isGrounded = value; }
 
 private:
 	float drag = 1;
@@ -26,4 +28,5 @@ private:
 	glm::vec3 m_position;
 	glm::vec3 m_mins;
 	glm::vec3 m_maxs;
+	bool m_isGrounded = false;
 };

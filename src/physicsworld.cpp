@@ -35,6 +35,11 @@ void PhysicsWorld::Tick(float deltaTime)
 			glm::vec3 v = object.GetVelocity();
 			v.y = fmaxf(0, v.y);
 			object.SetVelocity(v);
+			object.SetIsGrounded(true);
+		}
+		else
+		{
+			object.SetIsGrounded(false);
 		}
 	}
 }
