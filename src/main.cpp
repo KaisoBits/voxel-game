@@ -106,11 +106,9 @@ int main(int argc, char** argv)
 
 		mainCam.SetPosition(cameraPhysics.GetPosition());
 
-		glm::mat4 model = glm::mat4(1);
 		glm::mat4 view = mainCam.GetMatrix();
 		glm::mat4 perspective = glm::perspective(glm::radians(mainCam.GetFovY()), static_cast<float>(windowWidth) / windowHeight, 0.1f, 1000.0f);
 
-		shader.SetMat4("model", model);
 		shader.SetMat4("view", view);
 		shader.SetMat4("perspective", perspective);
 
