@@ -110,6 +110,9 @@ glm::vec2 Chunk::GetVoxel(const glm::ivec3& coordinate) const
 
 void Chunk::Draw(Shader& shader) const
 {
+	if (m_verticesCount == 0) // Fully filled, fully covered chunk
+		return;
+
 	glm::ivec3 globalPos = m_position * m_dimensions;
 	shader.SetVec3("chunkPos", globalPos);
 
