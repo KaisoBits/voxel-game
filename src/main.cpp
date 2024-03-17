@@ -73,12 +73,12 @@ int main(int argc, char** argv)
 	const siv::PerlinNoise::seed_type seed = 123456u;
 	const siv::PerlinNoise perlin{ seed };
 
-	for (size_t x = 0; x <= 100; x++)
+	for (int x = 0; x <= 100; x++)
 	{
-		for (size_t z = 0; z <= 100; z++)
+		for (int z = 0; z <= 100; z++)
 		{
 			const double bonusY = perlin.noise2D(x / 35.0, z / 35.0);
-			for (size_t y = 20; y <= 30 + static_cast<size_t>(bonusY * 20); y++)
+			for (int y = 20; y <= 30 + static_cast<int>(bonusY * 20); y++)
 			{
 				if (y > 30)
 					world.UpdateVoxel(glm::ivec3(x, y, z), glm::ivec2(13, 9));
