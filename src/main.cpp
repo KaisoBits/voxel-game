@@ -101,19 +101,6 @@ int main(int argc, char** argv)
 		PhysicsObject& cameraPhysics = mainCamPhysics.Object();
 		handleCameraMovement(window, cameraPhysics);
 
-		world.ApplyChanges();
-		physicsWorld.Tick(deltaTime);
-
-		mainCam.SetPosition(cameraPhysics.GetPosition());
-
-		glm::mat4 view = mainCam.GetMatrix();
-		glm::mat4 perspective = glm::perspective(glm::radians(mainCam.GetFovY()), static_cast<float>(windowWidth) / windowHeight, 0.1f, 1000.0f);
-
-		shader.SetMat4("view", view);
-		shader.SetMat4("perspective", perspective);
-
-		world.Draw(shader);
-
 		glm::vec3 camPos = mainCam.GetPosition() + glm::vec3(0.5f);
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
 		{
@@ -130,6 +117,19 @@ int main(int argc, char** argv)
 					for (int z = -2; z <= 2; z++)
 						world.UpdateVoxel(glm::ivec3(camPos) + glm::ivec3(x, y, z), glm::ivec2(0, 1));
 		}
+
+		world.ApplyChanges();
+		physicsWorld.Tick(deltaTime);
+
+		mainCam.SetPosition(cameraPhysics.GetPosition());
+
+		glm::mat4 view = mainCam.GetMatrix();
+		glm::mat4 perspective = glm::perspective(glm::radians(mainCam.GetFovY()), static_cast<float>(windowWidth) / windowHeight, 0.1f, 1000.0f);
+
+		shader.SetMat4("view", view);
+		shader.SetMat4("perspective", perspective);
+
+		world.Draw(shader);
 
 		glfwSwapBuffers(window);
 	}
