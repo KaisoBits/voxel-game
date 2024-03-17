@@ -32,19 +32,20 @@ void World::UpdateVoxel(const glm::ivec3& coordinate, const glm::ivec2& textureC
 	{
 		m_dirtyChunks.insert(chunkPos);
 
-		// TODO: Optimize for non edge voxels
-		if (m_chunks.contains(chunkPos + glm::ivec3(0, 0, 1)))
-			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 0, 1));
-		if (m_chunks.contains(chunkPos + glm::ivec3(0, 0, -1)))
-			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 0, -1));
-		if (m_chunks.contains(chunkPos + glm::ivec3(0, 1, 0)))
-			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 1, 0));
-		if (m_chunks.contains(chunkPos + glm::ivec3(0, -1, 0)))
-			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, -1, 0));
-		if (m_chunks.contains(chunkPos + glm::ivec3(1, 0, 0)))
-			m_dirtyChunks.insert(chunkPos + glm::ivec3(1, 0, 0));
-		if (m_chunks.contains(chunkPos + glm::ivec3(-1, 0, 0)))
+		if (inChunkPos.x % m_chunkDimensions.x == 0 && m_chunks.contains(chunkPos + glm::ivec3(-1, 0, 0)))
 			m_dirtyChunks.insert(chunkPos + glm::ivec3(-1, 0, 0));
+		else if (inChunkPos.x % m_chunkDimensions.x == m_chunkDimensions.x - 1 && m_chunks.contains(chunkPos + glm::ivec3(1, 0, 0)))
+			m_dirtyChunks.insert(chunkPos + glm::ivec3(1, 0, 0));
+
+		if (inChunkPos.y % m_chunkDimensions.y == 0 && m_chunks.contains(chunkPos + glm::ivec3(0, -1, 0)))
+			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, -1, 0));
+		else if (inChunkPos.y % m_chunkDimensions.y == m_chunkDimensions.y - 1 && m_chunks.contains(chunkPos + glm::ivec3(0, 1, 0)))
+			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 1, 0));
+
+		if (inChunkPos.z % m_chunkDimensions.z == 0 && m_chunks.contains(chunkPos + glm::ivec3(0, 0, -1)))
+			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 0, -1));
+		else if (inChunkPos.z % m_chunkDimensions.z == m_chunkDimensions.z - 1 && m_chunks.contains(chunkPos + glm::ivec3(0, 0, 1)))
+			m_dirtyChunks.insert(chunkPos + glm::ivec3(0, 0, 1));
 	}
 }
 
