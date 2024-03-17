@@ -71,7 +71,7 @@ void Chunk::Draw(Shader& shader) const
 	glDrawArrays(GL_TRIANGLES, 0, m_verticesCount);
 }
 
-void Chunk::GenerateMesh(const IBlockProvider& blockProvider)
+bool Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 {
 	using namespace std::chrono;
 	using namespace std::chrono_literals;
@@ -120,6 +120,8 @@ void Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 	auto bufferEnd = duration_cast<microseconds>(high_resolution_clock::now() - bufferStart);
 
 	m_verticesCount = static_cast<unsigned int>(vertexData.size());
+
+	return m_verticesCount != 0;
 
 	// std::cout << "Generation: " << generationEnd << ". Buffer:" << bufferEnd << '\n';
 }

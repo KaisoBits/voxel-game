@@ -64,7 +64,16 @@ glm::ivec2 World::GetVoxel(const glm::ivec3& coordinate) const
 void World::ApplyChanges()
 {
 	for (auto& chunkPos : m_dirtyChunks)
-		m_chunks.at(chunkPos).GenerateMesh(*this);
+	{
+		bool notEmpty = m_chunks.at(chunkPos).GenerateMesh(*this);
+		if (!notEmpty)
+		{
+			// m_dirtyChunks can contain non existing chunks
+			// because of border-updates propagating to surrounding chunks
+			// but it's fine to try to erease it anyway
+			m_chunks.erase(chunkPos);
+		}
+	}
 
 	m_dirtyChunks.clear();
 }

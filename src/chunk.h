@@ -17,7 +17,7 @@ public:
 
 	void Draw(Shader& shader) const;
 
-	void GenerateMesh(const IBlockProvider& blockProvider);
+	bool GenerateMesh(const IBlockProvider& blockProvider);
 
 private:
 	unsigned int m_meshVao = 0;
