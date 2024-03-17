@@ -11,6 +11,10 @@ class Chunk
 {
 public:
 	explicit Chunk(glm::ivec3 dimensions, glm::ivec3 position);
+	~Chunk();
+
+	Chunk(Chunk&& other) noexcept;
+	Chunk& operator=(Chunk&& other) noexcept;
 
 	bool UpdateVoxel(const glm::ivec3& coordinate, const glm::ivec2& textureCoordinate);
 	glm::vec2 GetVoxel(const glm::ivec3& coordinate) const;

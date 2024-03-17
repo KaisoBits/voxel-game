@@ -30,6 +30,52 @@ Chunk::Chunk(glm::ivec3 dimensions, glm::ivec3 position)
 	glEnableVertexAttribArray(2);
 }
 
+Chunk::Chunk(Chunk&& other) noexcept
+{
+	m_position = other.m_position;
+	m_dimensions = other.m_dimensions;
+
+	m_meshVbo = other.m_meshVbo;
+	other.m_meshVbo = 0;
+	m_meshVao = other.m_meshVao;
+	other.m_meshVao = 0;
+	m_verticesCount = other.m_verticesCount;
+	m_blocks = std::move(other.m_blocks);
+}
+
+Chunk& Chunk::operator=(Chunk&& other) noexcept
+{
+	if (&other == this)
+		return *this;
+
+	m_position = other.m_position;
+	m_dimensions = other.m_dimensions;
+
+	if (m_meshVbo != 0)
+		glDeleteBuffers(1, &m_meshVbo);
+	m_meshVbo = other.m_meshVbo;
+	other.m_meshVbo = 0;
+
+	if (m_meshVao != 0)
+		glDeleteBuffers(1, &m_meshVao);
+	m_meshVao = other.m_meshVao;
+	other.m_meshVao = 0;
+
+	m_verticesCount = other.m_verticesCount;
+	m_blocks = std::move(other.m_blocks);
+
+	return *this;
+}
+
+Chunk::~Chunk()
+{
+	if (m_meshVbo != 0)
+		glDeleteBuffers(1, &m_meshVbo);
+
+	if (m_meshVao != 0)
+		glDeleteBuffers(1, &m_meshVao);
+}
+
 bool Chunk::UpdateVoxel(const glm::ivec3& coordinate, const glm::ivec2& textureCoordinate)
 {
 	auto it = m_blocks.find(coordinate);
@@ -76,6 +122,11 @@ bool Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 	using namespace std::chrono;
 	using namespace std::chrono_literals;
 
+	if (m_blocks.size() == 0)
+	{
+		return false; // will get deleted by the world
+	}
+
 	unsigned int vertCount = 0;
 
 	glBindVertexArray(m_meshVao);
@@ -121,7 +172,7 @@ bool Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 
 	m_verticesCount = static_cast<unsigned int>(vertexData.size());
 
-	return m_verticesCount != 0;
+	return true;
 
 	// std::cout << "Generation: " << generationEnd << ". Buffer:" << bufferEnd << '\n';
 }
