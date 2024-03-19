@@ -70,7 +70,7 @@ void World::ApplyChanges()
 		{
 			// m_dirtyChunks can contain non existing chunks
 			// because of border-updates propagating to surrounding chunks
-			// but it's fine to try to erease it anyway
+			// but it's fine to try to erase it anyway
 			m_chunks.erase(chunkPos);
 		}
 	}
