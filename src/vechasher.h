@@ -11,7 +11,7 @@ struct VecHasher
 		std::size_t resultHash = 0;
 		for (glm::length_t i = 0; i < count; i++)
 		{
-			resultHash ^= hash(k[i]);
+			resultHash ^= hash(k[i]) << i * 5;
 		}
 
 		return resultHash;
