@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 		glfwPollEvents();
 
 		double now = glfwGetTime();
-		double deltaTime = fmin(now - lastTime, 0.3);
+		float deltaTime = static_cast<float>(fmin(now - lastTime, 0.3));
 		lastTime = now;
 
 		PhysicsObject& cameraPhysics = mainCamPhysics.Object();
@@ -165,7 +165,7 @@ void handleCameraMovement(GLFWwindow* window, PhysicsObject& physics)
 	glm::vec3 walkDir = velocity != glm::vec3(0) ? glm::normalize(velocity) * speed : glm::vec3(0);
 
 	float y = physics.GetVelocity().y;
-	float now = glfwGetTime();
+	float now = static_cast<float>(glfwGetTime());
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && now - lastJump > 0.4f)
 	{
 		y = 13.0f;
