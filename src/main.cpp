@@ -145,7 +145,7 @@ void handleCameraMovement(GLFWwindow* window, PhysicsObject& physics)
 	constexpr glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	float speed = (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) ?
-		2.0f : 5.0f;
+		50.0f : 5.0f;
 
 	glm::vec3 velocity(0);
 
