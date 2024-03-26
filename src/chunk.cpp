@@ -137,7 +137,7 @@ bool Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 
 	std::vector<float> vertexData;
 
-	auto generationStart = high_resolution_clock::now();
+	auto generationStart = steady_clock::now();
 
 	std::mutex mutex;
 
@@ -167,11 +167,11 @@ bool Chunk::GenerateMesh(const IBlockProvider& blockProvider)
 			}
 		});
 
-	auto generationEnd = duration_cast<microseconds>(high_resolution_clock::now() - generationStart);
+	auto generationEnd = duration_cast<microseconds>(steady_clock::now() - generationStart);
 
-	auto bufferStart = high_resolution_clock::now();
+	auto bufferStart = steady_clock::now();
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexData.size(), vertexData.data(), GL_DYNAMIC_DRAW);
-	auto bufferEnd = duration_cast<microseconds>(high_resolution_clock::now() - bufferStart);
+	auto bufferEnd = duration_cast<microseconds>(steady_clock::now() - bufferStart);
 
 	m_verticesCount = static_cast<unsigned int>(vertexData.size());
 
