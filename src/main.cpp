@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 		return -3;
 	}
 
-	mainCam.SetPosition(glm::vec3(0, 60, 0));
+	mainCam.SetPosition(glm::vec3(100, 60, 100));
 
 	glViewport(0, 0, windowWidth, windowHeight);
 	glfwSetWindowSizeCallback(window, windowSizeChangeCallback);
@@ -73,9 +73,9 @@ int main(int argc, char** argv)
 	const siv::PerlinNoise::seed_type seed = 123456u;
 	const siv::PerlinNoise perlin{ seed };
 
-	for (int x = -50; x <= 20; x++)
+	for (int x = 50; x <= 200; x++)
 	{
-		for (int z = -50; z <= 20;z++)
+		for (int z = 0; z <= 200; z++)
 		{
 			const double bonusY = perlin.noise2D(x / 35.0, z / 35.0);
 			for (int y = -10; y <= 30 + static_cast<int>(bonusY * 20); y++)
